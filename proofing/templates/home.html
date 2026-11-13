@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ProofSpace</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #3346a8;
+        }
+
+        p {
+            color: #555;
+        }
+
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 25px;
+            background: #3346a8;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to ProofSpace</h1>
+
+        <p>Client Proofing and File Approval Portal</p>
+
+        <p>Manage projects, upload files, and collect client feedback easily.</p>
+
+        <a href="{% url 'login' %}">Login</a>
+
+        <a href="{% url 'register' %}">Register</a>
+    </div>
+
+</body>
+</html>

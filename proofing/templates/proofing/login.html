@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | ProofSpace</title>
+</head>
+
+<body>
+
+    <h1>Welcome Back!</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account?</p>
+
+    <a href="{% url 'register' %}">
+        Create Account
+    </a>
+
+</body>
+</html>

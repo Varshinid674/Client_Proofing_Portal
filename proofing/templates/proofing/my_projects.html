@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Projects | ProofSpace</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f5fb;
+            color: #30204f;
+        }
+
+        header {
+            background: #30204f;
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .main {
+            padding: 40px 6%;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            color: #39245e;
+        }
+
+        .heading p {
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #7548b5;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #59358e;
+        }
+
+        .project-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .project-card {
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid #7548b5;
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .project-card h2 {
+            margin-bottom: 15px;
+            font-size: 21px;
+        }
+
+        .project-title {
+            color: #59358e;
+            text-decoration: none;
+        }
+
+        .project-title:hover {
+            text-decoration: underline;
+        }
+
+        .description {
+            color: #777;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .details {
+            color: #555;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            background: #eee5ff;
+            color: #7548b5;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .view-button {
+            display: inline-block;
+            margin-top: 18px;
+            background: #f0e9fb;
+            color: #59358e;
+            padding: 10px 17px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-button:hover {
+            background: #e2d4f7;
+        }
+
+        .empty {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .empty h2 {
+            margin-bottom: 12px;
+            color: #59358e;
+        }
+
+        .empty p {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .bottom-links {
+            margin-top: 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .main {
+                padding: 25px 5%;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">ProofSpace.</div>
+
+        <nav>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'home' %}">Home</a>
+        </nav>
+
+    </header>
+
+
+    <main class="main">
+
+        <div class="heading">
+
+            <div>
+                <h1>My Projects</h1>
+                <p>Manage and track all your projects in one place.</p>
+            </div>
+
+            {% if role == 'agency' %}
+            <a href="{% url 'add_project' %}" class="button">
+                + Add New Project
+            </a>
+            {% endif %}
+
+        </div>
+
+
+        {% if projects %}
+
+        <div class="project-container">
+
+            {% for project in projects %}
+
+            <div class="project-card">
+
+                <h2>
+                    <a class="project-title"
+                       href="{% url 'project_details' project.id %}">
+                        {{ project.title }}
+                    </a>
+                </h2>
+
+                <p class="description">
+                    {{ project.description }}
+                </p>
+
+                <div class="details">
+
+                    <p>
+                        <strong>Client:</strong>
+                        {{ project.client_name }}
+                    </p>
+
+                    <p>
+                        <strong>Created:</strong>
+                        {{ project.created_at|date:"d M Y" }}
+                    </p>
+
+                </div>
+
+                <span class="status">
+                    {{ project.status }}
+                </span>
+
+                <br>
+
+                <a href="{% url 'project_details' project.id %}"
+                   class="view-button">
+                    View Project →
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h2>No Projects Yet!</h2>
+
+            <p>
+                Your projects will appear here once they are available.
+            </p>
+
+            {% if role == 'agency' %}
+            <a href="{% url 'add_project' %}" class="button">
+                Create Your First Project
+            </a>
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="bottom-links">
+
+            <a href="{% url 'dashboard' %}" class="button">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+        © 2026 ProofSpace. All Rights Reserved.
+    </footer>
+
+</body>
+
+</html>

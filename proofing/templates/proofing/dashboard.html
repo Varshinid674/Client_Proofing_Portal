@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | ProofSpace</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f5fb;
+            color: #29243d;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            width: 250px;
+            background: #30204f;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .sidebar h4 {
+            color: #b9a9d5;
+            font-size: 12px;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #eee8fa;
+            text-decoration: none;
+            padding: 13px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #7548b5;
+        }
+
+        /* Main content */
+
+        .main {
+            flex: 1;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .topbar h1 {
+            color: #39245e;
+            font-size: 28px;
+        }
+
+        .role {
+            color: #7951ad;
+            margin-top: 10px;
+        }
+
+        .welcome {
+            margin-top: 35px;
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+        }
+
+        .welcome h2 {
+            color: #39245e;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* Statistics */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+            border-left: 5px solid #7951ad;
+        }
+
+        .card h2 {
+            font-size: 35px;
+            color: #7548b5;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* Quick links */
+
+        .section-title {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #39245e;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .quick-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #39245e;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.04);
+            transition: 0.3s;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .quick-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .quick-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 30px;
+            padding: 12px;
+            background: #7548b5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .logout-btn:hover {
+            background: #9166c9;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* Mobile responsive */
+
+        @media (max-width: 750px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .sidebar a {
+                display: inline-block;
+                margin-right: 5px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">ProofSpace.</div>
+
+        <h4>MAIN MENU</h4>
+
+        <a href="{% url 'dashboard' %}" class="active">
+            Dashboard
+        </a>
+
+        <a href="{% url 'my_projects' %}">
+            My Projects
+        </a>
+
+        {% if role == 'agency' %}
+        <a href="{% url 'add_project' %}">
+            Add New Project
+        </a>
+        {% endif %}
+
+        <a href="{% url 'audit_log' %}">
+            Audit Log
+        </a>
+
+        <a href="{% url 'home' %}">
+            Home
+        </a>
+
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">
+                Logout
+            </button>
+        </form>
+
+    </aside>
+
+
+    <!-- Main Dashboard -->
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Dashboard</h1>
+
+                {% if role == 'agency' %}
+                    <p class="role">Agency Account</p>
+                {% else %}
+                    <p class="role">Client Account</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <!-- Welcome Section -->
+
+        <section class="welcome">
+
+            <h2>
+                Welcome to ProofSpace, {{ request.user.username }}!
+            </h2>
+
+            {% if role == 'agency' %}
+                <p>
+                    Manage your projects, upload deliverables
+                    and track client approvals from one place.
+                </p>
+            {% else %}
+                <p>
+                    View your assigned projects, review files
+                    and share feedback with your agency.
+                </p>
+            {% endif %}
+
+        </section>
+
+
+        <!-- Statistics -->
+
+        <h2 class="section-title">Overview</h2>
+
+        <section class="stats">
+
+            <div class="card">
+                <h2>{{ total_projects }}</h2>
+
+                <p>
+                    {% if role == 'agency' %}
+                        Total Projects Created
+                    {% else %}
+                        Assigned Projects
+                    {% endif %}
+                </p>
+            </div>
+
+
+            <div class="card">
+                <h2>{{ pending_approvals }}</h2>
+                <p>Pending Approvals</p>
+            </div>
+
+
+            <div class="card">
+                <h2>{{ approved_files }}</h2>
+                <p>Approved Files</p>
+            </div>
+
+        </section>
+
+
+        <!-- Quick Navigation -->
+
+        <h2 class="section-title">Quick Access</h2>
+
+        <section class="quick-links">
+
+            <a href="{% url 'my_projects' %}" class="quick-card">
+                <h3>My Projects</h3>
+                <p>View and manage your projects.</p>
+            </a>
+
+            {% if role == 'agency' %}
+            <a href="{% url 'add_project' %}" class="quick-card">
+                <h3>Add Project</h3>
+                <p>Create a new project for your client.</p>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'audit_log' %}" class="quick-card">
+                <h3>Audit Log</h3>
+                <p>Track project activities and review history.</p>
+            </a>
+
+        </section>
+
+
+        <footer>
+            © 2026 ProofSpace. All Rights Reserved.
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
